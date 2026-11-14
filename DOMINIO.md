@@ -1,4 +1,4 @@
-# Conectar NicoUniverse a un dominio de GoDaddy (GitHub Pages)
+# Conectar Nico World a un dominio de GoDaddy (GitHub Pages)
 
 Cambia `tudominio.com` por el dominio real.
 
