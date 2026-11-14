@@ -3,230 +3,251 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>NicoUniverse</title>
-<meta name="description" content="El universo de Nicolás Viteri: AstroWorld, FlagWorld y Humanity World, tres mundos para aprender y jugar.">
-<meta name="theme-color" content="#1b1452">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='18' fill='%23ffd23f'/%3E%3Cellipse cx='32' cy='32' rx='30' ry='9' fill='none' stroke='%23ff6fb5' stroke-width='4' transform='rotate(-20 32 32)'/%3E%3C/svg%3E">
+<title>Nico World</title>
+<meta name="description" content="Nico World: AstroWorld, FlagWorld y Humanity World. Tres mundos para niñas y niños curiosos de 8 a 14 años, hechos en Ecuador.">
+<meta name="theme-color" content="#07112b">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='14' fill='%235fd3ff'/%3E%3Cellipse cx='32' cy='32' rx='29' ry='9' fill='none' stroke='%23ffd23f' stroke-width='3.5' transform='rotate(-20 32 32)'/%3E%3C/svg%3E">
 <style>
-/* NicoUniverse · une las tres apps: cielo de AstroWorld, celeste de FlagWorld,
-   botones gruesos y título dorado de Humanity World. Misma tipografía: Baloo 2. */
-@font-face { font-family: 'Baloo 2'; font-weight: 400; font-display: swap; src: url('fonts/baloo-2-latin-400-normal.woff2') format('woff2'); }
+/* Nico World · paleta derivada de AstroWorld, llevada hacia el azul y el celeste.
+   Baloo 2 (la letra de las tres apps) solo en títulos; el texto usa la letra del sistema. */
 @font-face { font-family: 'Baloo 2'; font-weight: 600; font-display: swap; src: url('fonts/baloo-2-latin-600-normal.woff2') format('woff2'); }
 @font-face { font-family: 'Baloo 2'; font-weight: 800; font-display: swap; src: url('fonts/baloo-2-latin-800-normal.woff2') format('woff2'); }
 
 :root {
-  --bg: #120c3a;
-  --bg-2: #1b1452;
-  --card: rgba(255, 255, 255, .07);
-  --card-solid: #241b63;
-  --line: rgba(255, 255, 255, .14);
-  --text: #f6f3ff;
-  --muted: #c3bce8;
-  --yellow: #ffd23f;
-  --pink: #ff6fb5;
+  --bg: #07112b;
+  --bg-2: #0b1a42;
+  --surface: rgba(120, 180, 255, .05);
+  --surface-2: #0e1f4d;
+  --line: rgba(140, 190, 255, .16);
+  --line-strong: rgba(140, 190, 255, .32);
+  --text: #eef5ff;
+  --muted: #a6badb;
   --cyan: #5fd3ff;
   --celeste: #4fb3e8;
-  --green: #7ddf6c;
+  --blue: #3d7bff;
+  --yellow: #ffd23f;
   --violet: #9d7bff;
-  --radius: 22px;
-  --shadow: 0 10px 30px rgba(5, 2, 30, .45);
-  --glow-1: #3d1f8f;
-  --glow-2: #1d3a8f;
-  --star: 1;
+  --pink: #ff6fb5;
+  --green: #7ddf6c;
+  --radius: 16px;
+  --shadow: 0 20px 50px rgba(2, 8, 30, .5);
+  --head: 'Baloo 2', 'Trebuchet MS', system-ui, sans-serif;
+  --body: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   color-scheme: dark;
-  font-family: 'Baloo 2', 'Trebuchet MS', system-ui, sans-serif;
 }
-@media (prefers-color-scheme: light) {
-  :root:not([data-theme="dark"]) {
-    --bg: #ffffff; --bg-2: #eef8fe; --card: #ffffff; --card-solid: #ffffff;
-    --line: #bfe2f5; --text: #12324a; --muted: #47657c;
-    --yellow: #b07a00; --pink: #c2357a; --cyan: #0b5d8c; --celeste: #0b5d8c;
-    --green: #2f7a24; --violet: #5a3fc0;
-    --shadow: 0 8px 24px rgba(11, 93, 140, .14);
-    --glow-1: #d6eefb; --glow-2: #f3e8ff; --star: 0;
-    color-scheme: light;
-  }
-}
-:root[data-theme="light"] {
-  --bg: #ffffff; --bg-2: #eef8fe; --card: #ffffff; --card-solid: #ffffff;
-  --line: #bfe2f5; --text: #12324a; --muted: #47657c;
-  --yellow: #b07a00; --pink: #c2357a; --cyan: #0b5d8c; --celeste: #0b5d8c;
-  --green: #2f7a24; --violet: #5a3fc0;
-  --shadow: 0 8px 24px rgba(11, 93, 140, .14);
-  --glow-1: #d6eefb; --glow-2: #f3e8ff; --star: 0;
-  color-scheme: light;
-}
-
 * { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
 body {
-  margin: 0; min-height: 100dvh; color: var(--text); background-color: var(--bg);
+  margin: 0; min-height: 100dvh; color: var(--text); font-family: var(--body);
+  font-size: 16px; line-height: 1.6; overflow-x: hidden;
+  background-color: var(--bg);
   background-image:
-    radial-gradient(1200px 600px at 80% -10%, var(--glow-1) 0%, transparent 60%),
-    radial-gradient(900px 500px at -10% 30%, var(--glow-2) 0%, transparent 55%),
-    linear-gradient(180deg, var(--bg-2), var(--bg));
+    radial-gradient(1100px 600px at 85% -10%, rgba(61, 123, 255, .28), transparent 60%),
+    radial-gradient(900px 520px at -10% 25%, rgba(95, 211, 255, .14), transparent 60%),
+    linear-gradient(180deg, var(--bg-2), var(--bg) 40%);
   background-attachment: fixed;
-  font-size: 17px; line-height: 1.55; overflow-x: hidden;
 }
-h1, h2, h3 { line-height: 1.12; margin: 0 0 .4em; font-weight: 800; }
-p { margin: 0 0 .8em; }
+h1, h2, h3 { font-family: var(--head); line-height: 1.1; margin: 0 0 .35em; font-weight: 800; letter-spacing: .2px; }
+p { margin: 0 0 .9em; }
 a { color: var(--cyan); }
-.wrap { width: min(1100px, 100% - 32px); margin-inline: auto; }
+.wrap { width: min(1140px, 100% - 32px); margin-inline: auto; }
+.eyebrow { display: inline-flex; align-items: center; gap: 8px; font-size: .78rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--cyan); }
+.eyebrow::before { content: ""; width: 18px; height: 2px; background: currentColor; border-radius: 2px; }
 
-/* Cielo estrellado (AstroWorld) */
-.sky { position: fixed; inset: 0; z-index: -1; pointer-events: none; opacity: var(--star); }
-.sky i {
-  position: absolute; inset: 0;
-  background-image:
-    radial-gradient(1.5px 1.5px at 20px 30px, #fff, transparent),
-    radial-gradient(1px 1px at 120px 80px, #ffe6a8, transparent),
-    radial-gradient(1.5px 1.5px at 200px 160px, #bcd0ff, transparent),
-    radial-gradient(1px 1px at 60px 200px, #fff, transparent),
-    radial-gradient(2px 2px at 260px 40px, #ffb3d9, transparent);
-  background-size: 300px 240px;
-  animation: twinkle 4s ease-in-out infinite alternate;
+/* Estrellas discretas */
+.sky { position: fixed; inset: 0; z-index: -1; pointer-events: none; }
+.sky i { position: absolute; inset: 0; background-image:
+  radial-gradient(1px 1px at 20px 30px, #fff, transparent),
+  radial-gradient(1px 1px at 140px 90px, #bfe4ff, transparent),
+  radial-gradient(1.4px 1.4px at 220px 170px, #9cc7ff, transparent),
+  radial-gradient(1px 1px at 70px 210px, #fff, transparent);
+  background-size: 300px 260px; opacity: .45; animation: tw 5s ease-in-out infinite alternate; }
+.sky i:nth-child(2) { background-size: 470px 380px; background-position: 120px 60px; animation-delay: -2.5s; opacity: .3; }
+@keyframes tw { from { opacity: .15; } to { opacity: .5; } }
+
+/* Botones finos */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  min-height: 42px; padding: 0 18px; border-radius: 10px; border: 1px solid transparent;
+  font: 600 .95rem var(--body); text-decoration: none; cursor: pointer; white-space: nowrap;
+  transition: background .15s, border-color .15s, color .15s;
 }
-.sky i:nth-child(2) { background-size: 410px 330px; background-position: 90px 60px; animation-delay: -1.5s; }
-.sky i:nth-child(3) { background-size: 530px 470px; background-position: 200px 140px; animation-delay: -3s; }
-@keyframes twinkle { from { opacity: .25; } to { opacity: .9; } }
+.btn svg { width: 16px; height: 16px; transition: transform .15s; }
+.btn:hover svg { transform: translateX(3px); }
+.btn-primary { background: var(--cyan); color: #04162e; }
+.btn-primary:hover { background: #8fe0ff; }
+.btn-ghost { border-color: var(--line-strong); color: var(--text); background: transparent; }
+.btn-ghost:hover { border-color: var(--cyan); color: var(--cyan); }
+.btn-sm { min-height: 36px; padding: 0 14px; font-size: .9rem; }
 
 /* Barra superior */
-.topbar {
-  position: sticky; top: 0; z-index: 20;
-  background: color-mix(in srgb, var(--bg) 80%, transparent);
-  backdrop-filter: blur(10px); border-bottom: 1px solid var(--line);
-}
-.topbar .wrap { display: flex; align-items: center; gap: 12px; min-height: 60px; }
-.brand { display: flex; align-items: center; gap: 8px; color: var(--text); text-decoration: none; font-size: 1.3rem; font-weight: 600; }
-.brand b { color: var(--yellow); font-weight: 800; }
-.brand svg { width: 34px; height: 34px; }
-.nav { margin-left: auto; display: flex; gap: 4px; }
-.nav a { color: var(--muted); text-decoration: none; font-weight: 600; padding: 6px 10px; border-radius: 99px; }
-.nav a:hover { color: var(--text); background: var(--card); }
-@media (max-width: 640px) { .nav { display: none; } }
+.topbar { position: sticky; top: 0; z-index: 30; background: rgba(7, 17, 43, .78); backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); }
+.topbar .wrap { display: flex; align-items: center; gap: 20px; min-height: 64px; }
+.brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text); font: 800 1.35rem var(--head); }
+.brand svg { width: 30px; height: 30px; }
+.brand span { color: var(--cyan); }
+.nav { display: flex; gap: 4px; margin-left: auto; }
+.nav a { color: var(--muted); text-decoration: none; font-size: .93rem; font-weight: 500; padding: 6px 12px; border-radius: 8px; }
+.nav a:hover { color: var(--text); background: var(--surface); }
+@media (max-width: 760px) { .nav { display: none; } .topbar .btn { margin-left: auto; } }
 
 /* Portada */
-.hero { padding: 72px 0 40px; display: grid; grid-template-columns: 1.2fr .8fr; gap: 32px; align-items: center; }
-@media (max-width: 820px) { .hero { grid-template-columns: 1fr; padding-top: 40px; text-align: center; } .hero .cta { justify-content: center; } }
-.kicker { display: inline-block; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; font-size: .8rem; color: var(--celeste); background: color-mix(in srgb, var(--celeste) 14%, transparent); padding: 4px 12px; border-radius: 99px; margin-bottom: 14px; }
-.title {
-  font-size: clamp(2.6rem, 8vw, 5rem); margin: 0 0 .15em; letter-spacing: .5px;
-  background: linear-gradient(180deg, #fff3b0, #ffd23f 45%, #ff8c42);
-  -webkit-background-clip: text; background-clip: text; color: transparent;
-  filter: drop-shadow(0 4px 0 rgba(0,0,0,.25));
-}
-:root[data-theme="light"] .title { background-image: linear-gradient(180deg, #ffb703, #fb8500 60%, #e8590c); filter: none; }
-@media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) .title { background-image: linear-gradient(180deg, #ffb703, #fb8500 60%, #e8590c); filter: none; } }
-.lead { font-size: 1.2rem; color: var(--muted); max-width: 40ch; }
-@media (max-width: 820px) { .lead { margin-inline: auto; } }
-.cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 22px; }
-
-/* Botones gruesos (Humanity World) */
-.btn {
-  display: inline-flex; align-items: center; gap: 8px; min-height: 48px; padding: 8px 20px;
-  font: inherit; font-weight: 800; font-size: 1.05rem; text-decoration: none; cursor: pointer;
-  border-radius: 18px; border: 3px solid rgba(255,255,255,.25);
-  box-shadow: 0 6px 0 rgba(0,0,0,.3); transition: transform .12s, box-shadow .12s;
-}
-.btn:hover { transform: translateY(-2px); box-shadow: 0 8px 0 rgba(0,0,0,.3); }
-.btn:active { transform: translateY(4px); box-shadow: 0 2px 0 rgba(0,0,0,.3); }
-.btn.principal { background: linear-gradient(180deg, #ff7aa2, #ff3d77); border-color: #ffd1de; color: #fff; }
-.btn.amarillo { background: linear-gradient(180deg, #ffe680, #ffc21a); border-color: #fff4c4; color: #4a3200; }
-.btn.celeste { background: linear-gradient(180deg, #8fd3fa, #4fb3e8); border-color: #d6eefb; color: #08324c; }
-.btn.violeta { background: linear-gradient(180deg, #b49bff, #7a55f0); border-color: #e2d8ff; color: #fff; }
-
-/* Avatar ilustrado (sin foto) */
-.avatar { position: relative; aspect-ratio: 1; width: min(340px, 80%); margin-inline: auto; }
-.avatar svg { width: 100%; height: 100%; overflow: visible; }
-.orbit { transform-origin: 160px 160px; animation: spin 28s linear infinite; }
-.orbit.r2 { animation-duration: 40s; animation-direction: reverse; }
+.hero { display: grid; grid-template-columns: 1.1fr .9fr; gap: 48px; align-items: center; padding: 84px 0 56px; }
+@media (max-width: 900px) { .hero { grid-template-columns: 1fr; padding-top: 48px; gap: 24px; } }
+.hero h1 { font-size: clamp(3rem, 8vw, 5.4rem); margin: 14px 0 12px; letter-spacing: -.5px; }
+.hero h1 span { background: linear-gradient(90deg, var(--cyan), var(--blue)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.hero .lead { font-size: 1.18rem; color: var(--muted); max-width: 52ch; }
+.hero .lead strong { color: var(--text); font-weight: 600; }
+.hero .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 26px; }
+.hero-art svg { width: 100%; height: auto; max-width: 480px; display: block; margin-inline: auto; overflow: visible; }
+.spin { transform-origin: 240px 240px; animation: spin 60s linear infinite; }
+.spin.slow { animation-duration: 90s; animation-direction: reverse; }
 @keyframes spin { to { transform: rotate(360deg); } }
-@media (prefers-reduced-motion: reduce) { .orbit, .sky i { animation: none; } html { scroll-behavior: auto; } }
+@media (prefers-reduced-motion: reduce) { .spin, .sky i { animation: none; } html { scroll-behavior: auto; } }
 
-/* Secciones */
-section { padding: 48px 0; }
-.sec-head { text-align: center; margin-bottom: 28px; }
-.sec-head h2 { font-size: clamp(1.8rem, 4.5vw, 2.6rem); }
-.sec-head p { color: var(--muted); max-width: 60ch; margin-inline: auto; }
-.card {
-  background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
-  box-shadow: var(--shadow); padding: 24px;
-}
+/* Cifras */
+.stats { display: grid; grid-template-columns: repeat(4, 1fr); border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); overflow: hidden; }
+.stats div { padding: 22px 24px; border-left: 1px solid var(--line); }
+.stats div:first-child { border-left: 0; }
+.stats b { display: block; font: 800 2.1rem/1 var(--head); color: var(--text); margin-bottom: 6px; }
+.stats span { color: var(--muted); font-size: .9rem; }
+@media (max-width: 700px) { .stats { grid-template-columns: repeat(2, 1fr); } .stats div:nth-child(3) { border-left: 0; } .stats div:nth-child(n+3) { border-top: 1px solid var(--line); } }
 
-/* Sobre Nico */
-.about { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
-.about .card h3 { font-size: 1.25rem; display: flex; align-items: center; gap: 10px; }
-.about .card p { color: var(--muted); }
-.emoji { width: 42px; height: 42px; border-radius: 14px; display: grid; place-items: center; flex: none; font-size: 1.4rem; }
-.pendiente {
-  display: inline; background: color-mix(in srgb, var(--yellow) 18%, transparent);
-  border: 1px dashed var(--yellow); border-radius: 8px; padding: 0 6px; color: var(--text);
-}
+section { padding: 88px 0 0; }
+.sec-head { max-width: 680px; margin-bottom: 36px; }
+.sec-head h2 { font-size: clamp(2rem, 4.4vw, 2.8rem); margin-top: 10px; }
+.sec-head p { color: var(--muted); font-size: 1.08rem; margin: 0; }
+
+/* Para quién */
+.audience { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+@media (max-width: 900px) { .audience { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 520px) { .audience { grid-template-columns: 1fr; } }
+.aud { padding: 24px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); }
+.aud .ico { width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center; margin-bottom: 16px; background: rgba(95, 211, 255, .1); color: var(--cyan); }
+.aud .ico svg { width: 22px; height: 22px; }
+.aud h3 { font-size: 1.25rem; }
+.aud p { color: var(--muted); font-size: .95rem; margin: 0; }
+.curious { margin-top: 16px; padding: 22px 26px; border-radius: var(--radius); border: 1px solid var(--line); background: linear-gradient(90deg, rgba(61, 123, 255, .14), rgba(95, 211, 255, .04)); display: flex; flex-wrap: wrap; gap: 10px 28px; align-items: center; }
+.curious strong { font: 800 1.15rem var(--head); }
+.curious em { color: var(--muted); font-style: normal; }
 
 /* Mundos */
-.mundos { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
-.mundo { position: relative; overflow: hidden; border-radius: 26px; border: 1px solid var(--line); box-shadow: var(--shadow); display: flex; flex-direction: column; }
-.mundo .arte { height: 190px; position: relative; display: grid; place-items: center; }
-.mundo .arte svg { height: 150px; width: auto; }
-.mundo .cuerpo { padding: 20px 22px 24px; background: var(--card-solid); flex: 1; display: flex; flex-direction: column; }
-.mundo h3 { font-size: 1.6rem; margin-bottom: .1em; }
-.mundo .tag { font-weight: 600; color: var(--muted); margin-bottom: 12px; }
-.mundo ul { list-style: none; padding: 0; margin: 0 0 18px; display: grid; gap: 6px; }
-.mundo li { display: flex; gap: 10px; align-items: baseline; }
-.mundo li b { font-size: 1.15rem; min-width: 3.2ch; }
-.mundo .btn { margin-top: auto; align-self: flex-start; }
-.astro .arte { background: radial-gradient(circle at 50% 120%, #3d1f8f, #120c3a 70%); }
-.astro h3, .astro li b { color: var(--yellow); }
-.flag .arte { background: linear-gradient(180deg, #d6eefb, #ffffff); }
-.flag h3, .flag li b { color: var(--celeste); }
-.human .arte { background: radial-gradient(circle at 50% 100%, #ff8c42 0%, #6b2a8f 45%, #1d1240 80%); }
-.human h3, .human li b { color: var(--pink); }
+.world { display: grid; grid-template-columns: 1fr 1.15fr; border: 1px solid var(--line); border-radius: 22px; overflow: hidden; background: var(--surface-2); box-shadow: var(--shadow); margin-bottom: 28px; }
+.world.flip { grid-template-columns: 1.15fr 1fr; }
+.world.flip .visual { order: 2; }
+@media (max-width: 900px) { .world, .world.flip { grid-template-columns: 1fr; } .world.flip .visual { order: 0; } }
+.visual { position: relative; min-height: 320px; display: grid; place-items: center; padding: 32px; }
+.visual svg { width: min(100%, 340px); height: auto; }
+.visual .badge { position: absolute; top: 18px; left: 18px; font-size: .75rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; padding: 5px 10px; border-radius: 99px; background: rgba(0, 0, 0, .3); border: 1px solid rgba(255, 255, 255, .15); color: #fff; }
+.v-astro { background: radial-gradient(circle at 50% 110%, #2b4bb8, #0a1540 70%); }
+.v-flag { background: radial-gradient(circle at 50% 100%, #2a8fd0, #0b2a55 75%); }
+.v-human { background: radial-gradient(circle at 50% 110%, #3d6bff, #121a4f 55%, #0a1030); }
+.info { padding: 36px 36px 32px; display: flex; flex-direction: column; }
+@media (max-width: 520px) { .info { padding: 26px 20px; } }
+.info .kind { font-size: .8rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+.info h3 { font-size: 2.2rem; margin: 6px 0 6px; }
+.info > p { color: var(--muted); }
+.features { list-style: none; margin: 8px 0 26px; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 14px 22px; }
+@media (max-width: 560px) { .features { grid-template-columns: 1fr; } }
+.features li { display: grid; grid-template-columns: 22px 1fr; gap: 10px; font-size: .94rem; color: var(--muted); }
+.features li b { display: block; color: var(--text); font-weight: 600; }
+.features svg { width: 20px; height: 20px; margin-top: 2px; }
+.info .row { display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center; margin-top: auto; }
+.info .meta { font-size: .85rem; color: var(--muted); }
+.astro .kind, .astro .features svg { color: var(--yellow); }
+.flag .kind, .flag .features svg { color: var(--celeste); }
+.human .kind, .human .features svg { color: var(--pink); }
 
-/* Cómo se hizo */
-.pasos { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; counter-reset: paso; }
-.paso { counter-increment: paso; }
-.paso::before {
-  content: counter(paso); display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%;
-  background: var(--yellow); color: var(--bg); font-weight: 800; font-size: 1.2rem; margin-bottom: 10px;
+/* Invitación */
+.invite { margin-top: 60px; padding: 48px 40px; border-radius: 24px; text-align: center; border: 1px solid var(--line-strong);
+  background: radial-gradient(600px 220px at 50% 0%, rgba(95, 211, 255, .22), transparent 70%), linear-gradient(180deg, #0f2459, #0a1840); }
+.invite h2 { font-size: clamp(1.9rem, 4.5vw, 2.6rem); margin-top: 10px; }
+.invite p { color: var(--muted); max-width: 56ch; margin: 0 auto 24px; }
+.invite .actions { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+@media (max-width: 520px) { .invite { padding: 36px 20px; } }
+
+/* Opiniones */
+.reviews { display: grid; grid-template-columns: .9fr 1.1fr; gap: 24px; align-items: start; }
+@media (max-width: 900px) { .reviews { grid-template-columns: 1fr; } }
+.panel { border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); padding: 26px; }
+@media (max-width: 520px) { .panel { padding: 20px; } }
+.panel h3 { font-size: 1.35rem; }
+label { display: block; font-size: .85rem; font-weight: 600; color: var(--muted); margin: 14px 0 6px; }
+input, select, textarea {
+  width: 100%; font: inherit; color: var(--text); background: rgba(3, 10, 30, .6);
+  border: 1px solid var(--line-strong); border-radius: 10px; padding: 10px 12px; min-height: 42px;
 }
-.paso h3 { font-size: 1.15rem; }
-.paso p { color: var(--muted); margin: 0; }
+textarea { min-height: 110px; resize: vertical; }
+input:focus, select:focus, textarea:focus, .btn:focus-visible { outline: 2px solid var(--cyan); outline-offset: 2px; }
+.stars { display: flex; gap: 4px; }
+.stars button { background: none; border: 0; padding: 2px; cursor: pointer; color: rgba(166, 186, 219, .35); }
+.stars button svg { width: 28px; height: 28px; }
+.stars button.on { color: var(--yellow); }
+.hint { font-size: .8rem; color: var(--muted); margin: 6px 0 0; }
+.form-foot { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; margin-top: 18px; }
+.msg { font-size: .9rem; min-height: 1.4em; margin-top: 12px; }
+.msg.ok { color: var(--green); } .msg.err { color: var(--pink); }
+.preview-note { font-size: .82rem; border: 1px dashed var(--yellow); color: var(--yellow); border-radius: 10px; padding: 8px 12px; margin-bottom: 6px; }
+.list-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 14px; flex-wrap: wrap; }
+.filters { display: flex; gap: 6px; flex-wrap: wrap; }
+.filters button { font: 600 .82rem var(--body); color: var(--muted); background: transparent; border: 1px solid var(--line); border-radius: 99px; padding: 5px 12px; cursor: pointer; min-height: 32px; }
+.filters button.on { color: #04162e; background: var(--cyan); border-color: var(--cyan); }
+.comment { border-top: 1px solid var(--line); padding: 16px 0; }
+.comment:first-of-type { border-top: 0; padding-top: 4px; }
+.comment header { display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; margin-bottom: 6px; }
+.comment .who { font-weight: 600; }
+.comment .tag { font-size: .72rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; padding: 2px 8px; border-radius: 99px; border: 1px solid var(--line-strong); color: var(--muted); }
+.comment .rate { color: var(--yellow); font-size: .9rem; letter-spacing: 1px; }
+.comment time { color: var(--muted); font-size: .8rem; margin-left: auto; }
+.comment p { margin: 0; color: #d6e3f7; overflow-wrap: anywhere; }
+.empty { color: var(--muted); text-align: center; padding: 28px 0; margin: 0; }
 
-/* Línea de tiempo */
-.timeline { position: relative; display: grid; gap: 14px; max-width: 760px; margin-inline: auto; }
-.timeline::before { content: ""; position: absolute; left: 19px; top: 8px; bottom: 8px; width: 3px; background: linear-gradient(var(--yellow), var(--pink), var(--celeste)); border-radius: 3px; }
-.hito { position: relative; padding-left: 56px; }
-.hito::before { content: ""; position: absolute; left: 10px; top: 22px; width: 21px; height: 21px; border-radius: 50%; background: var(--bg); border: 4px solid var(--yellow); }
-.hito .card { padding: 16px 20px; }
-.hito time { font-weight: 800; color: var(--celeste); font-size: .9rem; }
-.hito h3 { font-size: 1.1rem; margin: 2px 0 4px; }
-.hito p { margin: 0; color: var(--muted); }
+/* Compromisos */
+.commit { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+@media (max-width: 800px) { .commit { grid-template-columns: 1fr; } }
+.commit div { display: flex; gap: 14px; align-items: flex-start; padding: 20px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); }
+.commit svg { width: 22px; height: 22px; color: var(--cyan); flex: none; margin-top: 2px; }
+.commit p { margin: 0; }
+.commit b { display: block; }
+.commit span { color: var(--muted); font-size: .92rem; }
 
-/* Valores */
-.valores { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
-.chip { border: 2px solid var(--line); border-radius: 99px; padding: 6px 16px; font-weight: 600; background: var(--card); }
-
-/* Pie */
-footer { border-top: 1px solid var(--line); padding: 28px 0 40px; color: var(--muted); font-size: .95rem; }
-footer .wrap { display: flex; flex-wrap: wrap; gap: 12px 24px; justify-content: space-between; align-items: center; }
-.theme-toggle { font: inherit; font-weight: 600; color: var(--text); background: var(--card); border: 1px solid var(--line); border-radius: 99px; padding: 6px 14px; cursor: pointer; min-height: 40px; }
+footer { margin-top: 96px; border-top: 1px solid var(--line); padding: 32px 0 44px; color: var(--muted); font-size: .9rem; }
+footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 14px 24px; align-items: center; }
+footer nav { display: flex; gap: 18px; flex-wrap: wrap; }
+footer a { color: var(--muted); text-decoration: none; }
+footer a:hover { color: var(--cyan); }
 </style>
 </head>
 <body>
-<div class="sky" aria-hidden="true"><i></i><i></i><i></i></div>
+<div class="sky" aria-hidden="true"><i></i><i></i></div>
+
+<!-- Iconos reutilizables -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="currentColor" opacity=".15"/><path d="M7.5 12.5l3 3 6-6.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 2.8l2.8 5.8 6.3.9-4.6 4.4 1.1 6.3L12 17.2l-5.6 3 1.1-6.3L2.9 9.5l6.3-.9z" fill="currentColor"/></symbol>
+  <symbol id="i-planet" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><ellipse cx="12" cy="12" rx="10.5" ry="3.6" fill="none" stroke="currentColor" stroke-width="2" transform="rotate(-20 12 12)"/></symbol>
+  <symbol id="i-flag" viewBox="0 0 24 24"><path d="M5 21V4M5 4h11l-2 4 2 4H5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M3 12h18M12 3c3 3.2 3 14.8 0 18M12 3c-3 3.2-3 14.8 0 18" fill="none" stroke="currentColor" stroke-width="2"/></symbol>
+  <symbol id="i-game" viewBox="0 0 24 24"><rect x="2.5" y="7" width="19" height="11" rx="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M7.5 10.5v4M5.5 12.5h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="15.5" cy="11.5" r="1.2" fill="currentColor"/><circle cx="18" cy="14" r="1.2" fill="currentColor"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="4.5" y="10.5" width="15" height="10" rx="2.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5" fill="none" stroke="currentColor" stroke-width="2"/></symbol>
+  <symbol id="i-offline" viewBox="0 0 24 24"><path d="M2 8.5a15 15 0 0 1 20 0M5.5 12a10 10 0 0 1 13 0M9 15.5a5 5 0 0 1 6 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="19" r="1.5" fill="currentColor"/></symbol>
+  <symbol id="i-device" viewBox="0 0 24 24"><rect x="3" y="4" width="13" height="10" rx="1.5" fill="none" stroke="currentColor" stroke-width="2"/><rect x="15" y="9" width="6.5" height="11" rx="1.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M6 18h7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+</svg>
 
 <header class="topbar">
   <div class="wrap">
-    <a class="brand" href="#inicio" aria-label="NicoUniverse, inicio">
-      <svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="16" fill="#ffd23f"/><ellipse cx="32" cy="32" rx="29" ry="8" fill="none" stroke="#ff6fb5" stroke-width="4" transform="rotate(-20 32 32)"/></svg>
-      Nico<b>Universe</b>
+    <a class="brand" href="#inicio" aria-label="Nico World, inicio">
+      <svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="14" fill="#5fd3ff"/><ellipse cx="32" cy="32" rx="29" ry="9" fill="none" stroke="#ffd23f" stroke-width="3.5" transform="rotate(-20 32 32)"/></svg>
+      Nico<span>World</span>
     </a>
     <nav class="nav" aria-label="Secciones">
-      <a href="#sobre">Sobre Nico</a>
-      <a href="#mundos">Sus mundos</a>
-      <a href="#como">Cómo se hizo</a>
-      <a href="#historia">Historia</a>
+      <a href="#para-quien">Para quién</a>
+      <a href="#mundos">Los mundos</a>
+      <a href="#opiniones">Opiniones</a>
+      <a href="#compromisos">Compromisos</a>
     </nav>
+    <a class="btn btn-primary btn-sm" href="#jugar">Jugar ahora</a>
   </div>
 </header>
 
@@ -234,65 +255,64 @@ footer .wrap { display: flex; flex-wrap: wrap; gap: 12px 24px; justify-content: 
   <!-- PORTADA -->
   <div class="wrap hero">
     <div>
-      <span class="kicker">El universo de</span>
-      <h1 class="title">Nicolás Viteri</h1>
-      <p class="lead">Explorador de estrellas, coleccionista de banderas y creador de humanitos. Aquí viven los tres mundos que imaginó y que construimos juntos.</p>
-      <div class="cta">
-        <a class="btn principal" href="#mundos">Entrar a sus mundos</a>
-        <a class="btn amarillo" href="#sobre">Conoce a Nico</a>
+      <span class="eyebrow">Hecho en Ecuador · 8 a 14 años</span>
+      <h1>Nico <span>World</span></h1>
+      <p class="lead">Tres mundos para aprender jugando: <strong>el universo</strong>, <strong>las banderas y países del planeta</strong> y <strong>combates amistosos de humanitos</strong>. Nacieron de la curiosidad de Nico y están pensados para todos los niños que preguntan «¿por qué?».</p>
+      <div class="actions">
+        <a class="btn btn-primary" href="#mundos">Explorar los mundos <svg><use href="#i-arrow"/></svg></a>
+        <a class="btn btn-ghost" href="#opiniones">Ver opiniones</a>
       </div>
     </div>
-    <div class="avatar" aria-hidden="true">
-      <!-- Avatar ilustrado: no usamos fotos de Nico -->
-      <svg viewBox="0 0 320 320">
+    <div class="hero-art" aria-hidden="true">
+      <svg viewBox="0 0 480 480">
         <defs>
-          <radialGradient id="pl" cx="35%" cy="30%"><stop offset="0" stop-color="#fff3b0"/><stop offset=".5" stop-color="#ffd23f"/><stop offset="1" stop-color="#ff8c42"/></radialGradient>
+          <radialGradient id="core" cx="40%" cy="35%"><stop offset="0" stop-color="#c9f1ff"/><stop offset=".45" stop-color="#5fd3ff"/><stop offset="1" stop-color="#2459d6"/></radialGradient>
+          <radialGradient id="halo"><stop offset="0" stop-color="#5fd3ff" stop-opacity=".35"/><stop offset="1" stop-color="#5fd3ff" stop-opacity="0"/></radialGradient>
         </defs>
-        <ellipse cx="160" cy="160" rx="150" ry="150" fill="none" stroke="rgba(157,123,255,.35)" stroke-width="2" stroke-dasharray="4 10"/>
-        <ellipse cx="160" cy="160" rx="112" ry="112" fill="none" stroke="rgba(95,211,255,.35)" stroke-width="2" stroke-dasharray="4 10"/>
-        <circle cx="160" cy="160" r="72" fill="url(#pl)"/>
-        <!-- cara -->
-        <circle cx="136" cy="152" r="8" fill="#3a2a00"/><circle cx="184" cy="152" r="8" fill="#3a2a00"/>
-        <circle cx="139" cy="149" r="2.5" fill="#fff"/><circle cx="187" cy="149" r="2.5" fill="#fff"/>
-        <path d="M134 180 Q160 204 186 180" fill="none" stroke="#3a2a00" stroke-width="6" stroke-linecap="round"/>
-        <circle cx="120" cy="176" r="9" fill="#ff8fab" opacity=".6"/><circle cx="200" cy="176" r="9" fill="#ff8fab" opacity=".6"/>
-        <text x="160" y="118" text-anchor="middle" font-family="Baloo 2, sans-serif" font-weight="800" font-size="30" fill="#3a2a00">N</text>
-        <g class="orbit">
-          <!-- planeta con anillo (AstroWorld) -->
-          <g transform="translate(160 10)"><circle r="16" fill="#9d7bff"/><ellipse rx="27" ry="7" fill="none" stroke="#5fd3ff" stroke-width="3" transform="rotate(-20)"/></g>
-          <!-- bandera (FlagWorld) -->
-          <g transform="translate(290 220)"><rect x="-2" y="-22" width="4" height="40" rx="2" fill="#c3bce8"/><path d="M2 -22 h30 v20 h-30 z" fill="#4fb3e8"/><path d="M2 -15 h30 v6 h-30z" fill="#fff"/></g>
+        <circle cx="240" cy="240" r="200" fill="url(#halo)"/>
+        <circle cx="240" cy="240" r="210" fill="none" stroke="rgba(140,190,255,.18)"/>
+        <circle cx="240" cy="240" r="150" fill="none" stroke="rgba(140,190,255,.24)" stroke-dasharray="3 7"/>
+        <circle cx="240" cy="240" r="96" fill="none" stroke="rgba(140,190,255,.14)"/>
+        <circle cx="240" cy="240" r="62" fill="url(#core)"/>
+        <ellipse cx="240" cy="240" rx="100" ry="22" fill="none" stroke="#ffd23f" stroke-width="4" transform="rotate(-18 240 240)" opacity=".9"/>
+        <g class="spin">
+          <g transform="translate(240 30)"><circle r="30" fill="#0e1f4d" stroke="#9d7bff" stroke-width="2"/><circle r="11" fill="#ffd23f"/><ellipse rx="20" ry="6" fill="none" stroke="#9d7bff" stroke-width="2.5" transform="rotate(-20)"/></g>
+          <g transform="translate(422 345)"><circle r="30" fill="#0e1f4d" stroke="#4fb3e8" stroke-width="2"/><path d="M-9 13 V-14" stroke="#d6eefb" stroke-width="2.5" stroke-linecap="round"/><path d="M-9 -14 h20 v7 h-20z" fill="#ffd23f"/><path d="M-9 -7 h20 v4 h-20z" fill="#4fb3e8"/><path d="M-9 -3 h20 v4 h-20z" fill="#ff5d73"/></g>
+          <g transform="translate(58 345)"><circle r="30" fill="#0e1f4d" stroke="#ff6fb5" stroke-width="2"/><circle r="12" fill="#ff6fb5"/><path d="M-10 -7 L-15 -19 L-4 -11Z M10 -7 L15 -19 L4 -11Z" fill="#ff6fb5"/><circle cx="-4" cy="1" r="2" fill="#07112b"/><circle cx="4" cy="1" r="2" fill="#07112b"/></g>
         </g>
-        <g class="orbit r2">
-          <!-- máscara de humanito (Humanity World) -->
-          <g transform="translate(46 238)"><circle r="20" fill="#ff5d8f"/><path d="M-16 -12 L-22 -30 L-6 -18Z M16 -12 L22 -30 L6 -18Z" fill="#ff5d8f"/><path d="M-11 -4 l8 3 M11 -4 l-8 3" stroke="#000" stroke-width="3" stroke-linecap="round"/><circle cx="-6" cy="3" r="3"/><circle cx="6" cy="3" r="3"/></g>
-          <!-- estrella -->
-          <path transform="translate(270 70)" d="M0 -14 L4 -4 L14 -4 L6 3 L9 13 L0 7 L-9 13 L-6 3 L-14 -4 L-4 -4Z" fill="#ffd23f"/>
+        <g class="spin slow">
+          <circle cx="390" cy="135" r="4" fill="#5fd3ff"/><circle cx="90" cy="150" r="3" fill="#ffd23f"/><circle cx="240" cy="390" r="3.5" fill="#9d7bff"/>
         </g>
       </svg>
     </div>
   </div>
 
-  <!-- SOBRE NICO -->
-  <section id="sobre">
+  <div class="wrap">
+    <div class="stats" role="list">
+      <div role="listitem"><b>3</b><span>mundos para jugar</span></div>
+      <div role="listitem"><b>141</b><span>fichas del universo</span></div>
+      <div role="listitem"><b>195</b><span>países con su bandera</span></div>
+      <div role="listitem"><b>40</b><span>humanitos luchadores</span></div>
+    </div>
+  </div>
+
+  <!-- PARA QUIÉN -->
+  <section id="para-quien">
     <div class="wrap">
       <div class="sec-head">
-        <h2>Sobre Nico</h2>
-        <p>Un curioso de todo: pregunta por qué brillan las estrellas, de qué color es cada bandera y quién ganaría entre un rinoceronte y un pulpo.</p>
+        <span class="eyebrow">Para quién</span>
+        <h2>Pensado para niños curiosos</h2>
+        <p>Para niñas y niños de 8 a 14 años a quienes les apasiona descubrir cómo funciona el mundo… y lo que hay más allá.</p>
       </div>
-      <div class="about">
-        <article class="card">
-          <h3><span class="emoji" style="background:rgba(255,210,63,.18)">🚀</span>Quién es</h3>
-          <p>Nicolás vive en <span class="pendiente">[ciudad, país]</span>. Tiene <span class="pendiente">[edad o «x años»]</span> y le encanta <span class="pendiente">[2 o 3 cosas]</span>.</p>
-        </article>
-        <article class="card">
-          <h3><span class="emoji" style="background:rgba(79,179,232,.18)">🌎</span>Lo que le apasiona</h3>
-          <p>El espacio, los países del mundo y los animales. Cada una de esas pasiones se convirtió en una app.</p>
-        </article>
-        <article class="card">
-          <h3><span class="emoji" style="background:rgba(255,111,181,.18)">💡</span>Su papel</h3>
-          <p>Nico propone las ideas, prueba cada versión y decide qué se queda. <span class="pendiente">[ejemplo concreto: «inventó los 40 humanitos»]</span></p>
-        </article>
+      <div class="audience">
+        <article class="aud"><div class="ico"><svg><use href="#i-planet"/></svg></div><h3>El universo</h3><p>Planetas, lunas, estrellas, galaxias y agujeros negros, explicados desde el cielo de Ecuador.</p></article>
+        <article class="aud"><div class="ico"><svg><use href="#i-flag"/></svg></div><h3>Las banderas</h3><p>Qué significa cada color, cada escudo y cada símbolo de las banderas del mundo.</p></article>
+        <article class="aud"><div class="ico"><svg><use href="#i-globe"/></svg></div><h3>Los países</h3><p>Capitales, continentes, idiomas, monedas y vecinos en un mapa que se explora tocando.</p></article>
+        <article class="aud"><div class="ico"><svg><use href="#i-game"/></svg></div><h3>Los juegos</h3><p>Retos diarios, insignias y combates amistosos: se aprende mientras se juega.</p></article>
+      </div>
+      <div class="curious">
+        <strong>Todo empieza con una pregunta.</strong>
+        <em>¿Por qué brillan las estrellas? · ¿Qué significa el amarillo de una bandera? · ¿Quién ganaría entre un rinoceronte y un pulpo?</em>
       </div>
     </div>
   </section>
@@ -301,125 +321,183 @@ footer .wrap { display: flex; flex-wrap: wrap; gap: 12px 24px; justify-content: 
   <section id="mundos">
     <div class="wrap">
       <div class="sec-head">
-        <h2>Sus tres mundos</h2>
-        <p>Funcionan en el celular, la tablet o la computadora, se instalan como app y no piden cuentas ni datos personales.</p>
+        <span class="eyebrow">Los mundos</span>
+        <h2>Tres mundos, una misma curiosidad</h2>
+        <p>Cada mundo se instala como una app en el celular, la tablet o la computadora y funciona sin internet después de la primera visita.</p>
       </div>
-      <div class="mundos">
-        <!-- AstroWorld -->
-        <article class="mundo astro">
-          <div class="arte" aria-hidden="true">
-            <svg viewBox="0 0 200 150">
-              <circle cx="100" cy="75" r="42" fill="#ffd23f"/>
-              <circle cx="88" cy="64" r="10" fill="#ffe680"/>
-              <ellipse cx="100" cy="75" rx="80" ry="18" fill="none" stroke="#ff6fb5" stroke-width="6" transform="rotate(-15 100 75)"/>
-              <circle cx="30" cy="25" r="3" fill="#fff"/><circle cx="170" cy="30" r="2" fill="#bcd0ff"/><circle cx="160" cy="125" r="3" fill="#ffe6a8"/><circle cx="25" cy="120" r="2" fill="#fff"/>
-              <circle cx="170" cy="90" r="9" fill="#9d7bff"/>
-            </svg>
-          </div>
-          <div class="cuerpo">
-            <h3>AstroWorld</h3>
-            <p class="tag">El cielo explicado desde Ecuador</p>
-            <ul>
-              <li><b>141</b> fichas de planetas, lunas, estrellas y galaxias</li>
-              <li><b>552</b> preguntas de trivia en 3 niveles</li>
-              <li><b>3D</b> sistema solar que se mueve en tiempo real</li>
-            </ul>
-            <a class="btn violeta" href="#" data-pendiente="url de AstroWorld">Jugar AstroWorld</a>
-          </div>
-        </article>
 
-        <!-- FlagWorld -->
-        <article class="mundo flag">
-          <div class="arte" aria-hidden="true">
-            <svg viewBox="0 0 200 150">
-              <circle cx="100" cy="80" r="56" fill="#d6eefb" stroke="#4fb3e8" stroke-width="4"/>
-              <path d="M62 60 q14 -10 30 0 t30 6 l6 16 q-18 10 -30 2 t-34 -4z M90 108 q10 -8 22 0 l-4 12 q-10 4 -16 -2z" fill="#fff" stroke="#7fc4ea" stroke-width="3"/>
-              <rect x="128" y="14" width="5" height="62" rx="2" fill="#0b5d8c"/>
-              <path d="M133 14 h44 v30 h-44z" fill="#ffd23f"/><path d="M133 29 h44 v8 h-44z" fill="#4fb3e8"/><path d="M133 37 h44 v7 h-44z" fill="#ff5d73"/>
-            </svg>
+      <!-- AstroWorld -->
+      <article class="world astro">
+        <div class="visual v-astro" aria-hidden="true">
+          <span class="badge">Astronomía</span>
+          <svg viewBox="0 0 300 240">
+            <circle cx="40" cy="40" r="1.5" fill="#fff"/><circle cx="260" cy="30" r="1.2" fill="#bfe4ff"/><circle cx="270" cy="200" r="1.6" fill="#fff"/><circle cx="30" cy="190" r="1.2" fill="#fff"/>
+            <ellipse cx="150" cy="120" rx="135" ry="44" fill="none" stroke="rgba(255,255,255,.18)"/>
+            <ellipse cx="150" cy="120" rx="95" ry="30" fill="none" stroke="rgba(255,255,255,.22)"/>
+            <circle cx="150" cy="120" r="46" fill="#ffd23f" opacity=".15"/><circle cx="150" cy="120" r="34" fill="#ffd23f"/>
+            <circle cx="245" cy="120" r="10" fill="#5fd3ff"/>
+            <g transform="translate(40 140)"><circle r="16" fill="#e8b46b"/><ellipse rx="28" ry="7" fill="none" stroke="#f3d9a6" stroke-width="3" transform="rotate(-15)"/></g>
+            <circle cx="120" cy="91" r="6" fill="#ff8a65"/>
+          </svg>
+        </div>
+        <div class="info">
+          <span class="kind">AstroWorld</span>
+          <h3>El cielo, de cerca</h3>
+          <p>Un viaje por el sistema solar y más allá, con tres niveles de lectura que crecen con cada niño: Explorador, Navegante y Astrónomo.</p>
+          <ul class="features">
+            <li><svg><use href="#i-check"/></svg><span><b>141 fichas</b>Sol, planetas, lunas, estrellas, galaxias y constelaciones visibles desde Ecuador.</span></li>
+            <li><svg><use href="#i-check"/></svg><span><b>Sistema solar en 3D</b>Se mueve en tiempo real; toca un astro y la cámara viaja hasta él.</span></li>
+            <li><svg><use href="#i-check"/></svg><span><b>552 preguntas</b>Reto diario de 5 preguntas y repaso de las falladas.</span></li>
+            <li><svg><use href="#i-check"/></svg><span><b>Misiones e insignias</b>Racha diaria, avatares y subida de nivel aprendiendo.</span></li>
+          </ul>
+          <div class="row">
+            <a class="btn btn-primary" href="#" data-pendiente="la dirección de AstroWorld">Jugar AstroWorld <svg><use href="#i-arrow"/></svg></a>
+            <span class="meta">Gratis · sin registro</span>
           </div>
-          <div class="cuerpo">
-            <h3>FlagWorld</h3>
-            <p class="tag">Banderas y países del mundo</p>
-            <ul>
-              <li><b>195</b> países en un mapa que se toca</li>
-              <li><b>6</b> tipos de trivia y reto diario</li>
-              <li><b>11</b> insignias para coleccionar</li>
-            </ul>
-            <a class="btn celeste" href="https://flagworld.pythonanywhere.com">Jugar FlagWorld</a>
-          </div>
-        </article>
+        </div>
+      </article>
 
-        <!-- Humanity World -->
-        <article class="mundo human">
-          <div class="arte" aria-hidden="true">
-            <svg viewBox="0 0 200 150">
-              <!-- dos humanitos -->
-              <g transform="translate(62 82)">
-                <circle r="30" fill="#4cc9f0"/><path d="M-24 -18 L-34 -46 L-10 -28Z M24 -18 L34 -46 L10 -28Z" fill="#4cc9f0"/>
-                <path d="M-16 -6 l12 5 M16 -6 l-12 5" stroke="#000" stroke-width="4" stroke-linecap="round"/><circle cx="-9" cy="6" r="4"/><circle cx="9" cy="6" r="4"/><path d="M-8 18 h16" stroke="#000" stroke-width="4" stroke-linecap="round"/>
-              </g>
-              <g transform="translate(140 82)">
-                <circle r="30" fill="#ff5d8f"/><ellipse cx="0" cy="14" rx="16" ry="10" fill="#ffa3bf"/>
-                <path d="M-16 -8 l12 5 M16 -8 l-12 5" stroke="#000" stroke-width="4" stroke-linecap="round"/><circle cx="-9" cy="4" r="4"/><circle cx="9" cy="4" r="4"/>
-              </g>
-              <path d="M101 50 l6 12 l12 -4 l-6 12 l10 8 l-13 2 l0 13 l-9 -10 l-9 10 l0 -13 l-13 -2 l10 -8 l-6 -12 l12 4z" fill="#ffd23f"/>
-            </svg>
+      <!-- FlagWorld -->
+      <article class="world flag flip">
+        <div class="visual v-flag" aria-hidden="true">
+          <span class="badge">Geografía</span>
+          <svg viewBox="0 0 300 240">
+            <circle cx="150" cy="125" r="88" fill="#d6eefb" opacity=".95"/>
+            <path d="M92 95 q22 -16 46 -2 t46 8 l10 24 q-28 16 -46 4 t-52 -6z M120 165 q16 -12 34 0 l-6 18 q-16 6 -26 -3z M196 150 q10 -8 20 2 l-4 12 q-10 2 -16 -4z" fill="#ffffff" stroke="#4fb3e8" stroke-width="2.5"/>
+            <path d="M62 125 h176 M150 37 v176" stroke="rgba(79,179,232,.35)" stroke-width="1.5"/>
+            <g transform="translate(206 32)"><rect x="0" y="0" width="4" height="70" rx="2" fill="#eef5ff"/><path d="M4 2 h50 v34 h-50z" fill="#ffd23f"/><path d="M4 19 h50 v9 h-50z" fill="#3d7bff"/><path d="M4 28 h50 v8 h-50z" fill="#ff5d73"/></g>
+            <circle cx="128" cy="105" r="5" fill="#e8590c"/>
+          </svg>
+        </div>
+        <div class="info">
+          <span class="kind">FlagWorld</span>
+          <h3>Todas las banderas del mundo</h3>
+          <p>Un mapamundi interactivo: toca un país y descubre su bandera, su capital y la historia detrás de cada color.</p>
+          <ul class="features">
+            <li><svg><use href="#i-check"/></svg><span><b>195 países</b>En un mapa con zoom, buscador y filtro por continente.</span></li>
+            <li><svg><use href="#i-check"/></svg><span><b>Simbolismo revisado</b>Qué significa cada color, escudo y elemento de la bandera.</span></li>
+            <li><svg><use href="#i-check"/></svg><span><b>6 tipos de trivia</b>Banderas, capitales, ubicación en el mapa y simbolismo.</span></li>
+            <li><svg><use href="#i-check"/></svg><span><b>11 insignias</b>Reto diario de 10 preguntas y repaso espaciado.</span></li>
+          </ul>
+          <div class="row">
+            <a class="btn btn-primary" href="https://flagworld.pythonanywhere.com">Jugar FlagWorld <svg><use href="#i-arrow"/></svg></a>
+            <span class="meta">Gratis · sin registro</span>
           </div>
-          <div class="cuerpo">
-            <h3>Humanity World</h3>
-            <p class="tag">Peleas amistosas de humanitos</p>
-            <ul>
-              <li><b>40</b> humanitos con su habilidad especial</li>
-              <li><b>8</b> escenarios, del volcán al cielo</li>
-              <li><b>0</b> sangre: solo estrellitas y destellos</li>
-            </ul>
-            <a class="btn principal" href="#" data-pendiente="url de Humanity World">Jugar Humanity World</a>
+        </div>
+      </article>
+
+      <!-- Humanity World -->
+      <article class="world human">
+        <div class="visual v-human" aria-hidden="true">
+          <span class="badge">Juego de peleas</span>
+          <svg viewBox="0 0 300 240">
+            <rect x="20" y="190" width="260" height="6" rx="3" fill="rgba(255,255,255,.18)"/>
+            <g transform="translate(95 125)">
+              <circle r="40" fill="#5fd3ff"/><path d="M-32 -24 L-44 -60 L-14 -36Z M32 -24 L44 -60 L14 -36Z" fill="#5fd3ff"/>
+              <path d="M-21 -8 l15 6 M21 -8 l-15 6" stroke="#07112b" stroke-width="5" stroke-linecap="round"/><circle cx="-12" cy="8" r="5" fill="#07112b"/><circle cx="12" cy="8" r="5" fill="#07112b"/><path d="M-10 24 h20" stroke="#07112b" stroke-width="5" stroke-linecap="round"/>
+            </g>
+            <g transform="translate(210 125)">
+              <circle r="40" fill="#ff6fb5"/><ellipse cy="18" rx="20" ry="13" fill="#ffb3d9"/><circle cx="-7" cy="18" r="3" fill="#07112b"/><circle cx="7" cy="18" r="3" fill="#07112b"/>
+              <path d="M-21 -12 l15 6 M21 -12 l-15 6" stroke="#07112b" stroke-width="5" stroke-linecap="round"/><circle cx="-12" cy="2" r="5" fill="#07112b"/><circle cx="12" cy="2" r="5" fill="#07112b"/>
+            </g>
+            <path d="M152 70 l7 15 l16 -5 l-8 15 l13 10 l-17 2 l0 17 l-11 -13 l-11 13 l0 -17 l-17 -2 l13 -10 l-8 -15 l16 5z" fill="#ffd23f"/>
+            <g fill="#ffd23f"><circle cx="40" cy="60" r="3"/><circle cx="265" cy="70" r="2.5"/><circle cx="250" cy="40" r="2"/></g>
+          </svg>
+        </div>
+        <div class="info">
+          <span class="kind">Humanity World</span>
+          <h3>Combates amistosos</h3>
+          <p>Humanitos con máscara de animal pelean con su habilidad especial. Sin sangre: los golpes sueltan estrellitas y destellos.</p>
+          <ul class="features">
+            <li><svg><use href="#i-check"/></svg><span><b>40 humanitos</b>Cada uno con su especial, su debilidad y su festejo de victoria.</span></li>
+            <li><svg><use href="#i-check"/></svg><span><b>8 escenarios</b>Volcán, glaciar, laguna, selva, desierto, bosque nocturno y más.</span></li>
+            <li><svg><use href="#i-check"/></svg><span><b>Modos de batalla</b>1 contra 1, todos contra todos y por equipos.</span></li>
+            <li><svg><use href="#i-check"/></svg><span><b>10 niveles de dificultad</b>Teclado o controles táctiles en celular y tablet.</span></li>
+          </ul>
+          <div class="row">
+            <a class="btn btn-primary" href="#" data-pendiente="la dirección de Humanity World">Jugar Humanity World <svg><use href="#i-arrow"/></svg></a>
+            <span class="meta">Gratis · sin registro</span>
           </div>
-        </article>
+        </div>
+      </article>
+
+      <!-- INVITACIÓN -->
+      <div class="invite" id="jugar">
+        <span class="eyebrow">Tu turno</span>
+        <h2>Elige tu mundo y empieza a jugar</h2>
+        <p>No hace falta crear una cuenta ni descargar nada de una tienda. Entra, juega y, si te gusta, instálalo en tu pantalla de inicio.</p>
+        <div class="actions">
+          <a class="btn btn-primary" href="#" data-pendiente="la dirección de AstroWorld">AstroWorld <svg><use href="#i-arrow"/></svg></a>
+          <a class="btn btn-primary" href="https://flagworld.pythonanywhere.com">FlagWorld <svg><use href="#i-arrow"/></svg></a>
+          <a class="btn btn-primary" href="#" data-pendiente="la dirección de Humanity World">Humanity World <svg><use href="#i-arrow"/></svg></a>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- CÓMO SE HIZO -->
-  <section id="como">
+  <!-- OPINIONES -->
+  <section id="opiniones">
     <div class="wrap">
       <div class="sec-head">
-        <h2>Cómo se hizo</h2>
-        <p>Cada mundo nace de una idea de Nico y se construye en familia con Claude Code.</p>
+        <span class="eyebrow">Opiniones</span>
+        <h2>¿Qué te pareció?</h2>
+        <p>Cuéntanos qué te gustó y qué mejorarías. No necesitas registrarte. Cada comentario se revisa antes de publicarse.</p>
       </div>
-      <div class="pasos">
-        <article class="card paso"><h3>Nico imagina</h3><p>Qué se aprende, cómo se juega y cómo se ve.</p></article>
-        <article class="card paso"><h3>Se escribe el plan</h3><p>Un documento con las reglas: para niños, sin publicidad y sin pedir datos.</p></article>
-        <article class="card paso"><h3>Se construye con IA</h3><p>Claude Code escribe el código; en familia se revisa cada fase.</p></article>
-        <article class="card paso"><h3>Nico lo prueba</h3><p>Si algo no es divertido o no se entiende, se cambia.</p></article>
+      <div class="reviews">
+        <form class="panel" id="form" novalidate>
+          <h3>Deja tu comentario</h3>
+          <div class="preview-note" id="preview-note" hidden>Vista previa: los comentarios se guardan solo en este navegador hasta conectar el servidor.</div>
+          <label for="f-mundo">¿Sobre qué mundo?</label>
+          <select id="f-mundo">
+            <option value="Nico World">Nico World en general</option>
+            <option value="AstroWorld">AstroWorld</option>
+            <option value="FlagWorld">FlagWorld</option>
+            <option value="Humanity World">Humanity World</option>
+          </select>
+          <label id="l-estrellas">Tu calificación</label>
+          <div class="stars" id="stars" role="radiogroup" aria-labelledby="l-estrellas"></div>
+          <label for="f-alias">Apodo (opcional)</label>
+          <input id="f-alias" maxlength="24" autocomplete="off" placeholder="Ej.: Explorador estelar">
+          <p class="hint">Usa un apodo, no tu nombre real.</p>
+          <label for="f-texto">Comentario</label>
+          <textarea id="f-texto" maxlength="400" placeholder="¿Qué te gustó? ¿Qué agregarías?"></textarea>
+          <p class="hint">No escribas tu nombre completo, tu colegio, tu teléfono ni tu correo. <span id="count">0</span>/400</p>
+          <!-- Campo trampa contra robots: las personas no lo ven -->
+          <input type="text" id="f-web" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;width:1px" aria-hidden="true">
+          <div class="form-foot">
+            <span class="hint" style="margin:0">Se publica después de revisarlo.</span>
+            <button class="btn btn-primary" type="submit">Enviar comentario</button>
+          </div>
+          <div class="msg" id="msg" role="status"></div>
+        </form>
+
+        <div class="panel">
+          <div class="list-head">
+            <h3 style="margin:0">Lo que dicen los jugadores</h3>
+            <div class="filters" id="filters">
+              <button type="button" class="on" data-f="">Todos</button>
+              <button type="button" data-f="AstroWorld">AstroWorld</button>
+              <button type="button" data-f="FlagWorld">FlagWorld</button>
+              <button type="button" data-f="Humanity World">Humanity</button>
+            </div>
+          </div>
+          <div id="list"><p class="empty">Todavía no hay comentarios. ¡Sé el primero en opinar!</p></div>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- HISTORIA -->
-  <section id="historia">
+  <!-- COMPROMISOS -->
+  <section id="compromisos">
     <div class="wrap">
-      <div class="sec-head"><h2>Historia del universo</h2></div>
-      <div class="timeline">
-        <div class="hito"><div class="card"><time>2026</time><h3>Nace AstroWorld</h3><p>El primer mundo: el sistema solar visto desde la Mitad del Mundo.</p></div></div>
-        <div class="hito"><div class="card"><time>2026</time><h3>Llega FlagWorld</h3><p>El hermano de AstroWorld: un mapamundi con todas las banderas.</p></div></div>
-        <div class="hito"><div class="card"><time>Noviembre 2026</time><h3>Se abre Humanity World</h3><p>40 humanitos listos para pelear (sin sangre).</p></div></div>
-        <div class="hito"><div class="card"><time>Próximamente</time><h3><span class="pendiente">[el siguiente mundo]</span></h3><p>Nico ya está pensando en el próximo.</p></div></div>
+      <div class="sec-head">
+        <span class="eyebrow">Compromisos</span>
+        <h2>Un lugar seguro para jugar</h2>
       </div>
-    </div>
-  </section>
-
-  <!-- VALORES -->
-  <section>
-    <div class="wrap">
-      <div class="sec-head"><h2>Reglas de este universo</h2></div>
-      <div class="valores">
-        <span class="chip">🔒 Sin cuentas ni registros</span>
-        <span class="chip">🚫 Sin publicidad</span>
-        <span class="chip">📴 Funciona sin internet</span>
-        <span class="chip">🧒 Pensado para 8 a 14 años</span>
-        <span class="chip">🇪🇨 Hecho en Ecuador</span>
+      <div class="commit">
+        <div><svg><use href="#i-lock"/></svg><p><b>Sin cuentas ni publicidad</b><span>No pedimos datos personales. El progreso se guarda solo en tu dispositivo.</span></p></div>
+        <div><svg><use href="#i-offline"/></svg><p><b>Funciona sin internet</b><span>Después de la primera visita, cada mundo se puede usar sin conexión.</span></p></div>
+        <div><svg><use href="#i-device"/></svg><p><b>En cualquier pantalla</b><span>Celular, tablet o computadora. Para niñas y niños de 8 a 14 años.</span></p></div>
       </div>
     </div>
   </section>
@@ -427,27 +505,110 @@ footer .wrap { display: flex; flex-wrap: wrap; gap: 12px 24px; justify-content: 
 
 <footer>
   <div class="wrap">
-    <span>© 2026 NicoUniverse · Familia Viteri</span>
-    <button class="theme-toggle" type="button" id="tema">Cambiar tema</button>
+    <span>© 2026 Nico World · Hecho en Ecuador</span>
+    <nav aria-label="Pie de página">
+      <a href="#mundos">Los mundos</a>
+      <a href="#opiniones">Opiniones</a>
+      <a href="#compromisos">Compromisos</a>
+    </nav>
   </div>
 </footer>
 
 <script>
-  // Tema claro/oscuro: la preferencia se recuerda solo en este dispositivo.
-  (function () {
-    var root = document.documentElement, KEY = 'nicouniverse-tema';
-    try { var t = localStorage.getItem(KEY); if (t) root.dataset.theme = t; } catch (e) {}
-    document.getElementById('tema').addEventListener('click', function () {
-      var actual = root.dataset.theme || (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
-      var nuevo = actual === 'light' ? 'dark' : 'light';
-      root.dataset.theme = nuevo;
-      try { localStorage.setItem(KEY, nuevo); } catch (e) {}
+(function () {
+  // Dirección del servidor de comentarios (pendiente). Vacía = modo vista previa en este navegador.
+  var API = '';
+  var LOCAL_KEY = 'nicoworld-comentarios';
+
+  // Enlaces aún sin publicar
+  document.querySelectorAll('[data-pendiente]').forEach(function (a) {
+    a.addEventListener('click', function (e) { e.preventDefault(); alert('Muy pronto: falta poner ' + a.dataset.pendiente + '.'); });
+  });
+
+  // Estrellas
+  var rating = 5, starsEl = document.getElementById('stars');
+  for (var i = 1; i <= 5; i++) {
+    var b = document.createElement('button');
+    b.type = 'button'; b.dataset.v = i; b.setAttribute('role', 'radio'); b.setAttribute('aria-label', i + (i === 1 ? ' estrella' : ' estrellas'));
+    b.innerHTML = '<svg><use href="#i-star"/></svg>';
+    b.addEventListener('click', function () { rating = +this.dataset.v; paintStars(); });
+    starsEl.appendChild(b);
+  }
+  function paintStars() {
+    starsEl.querySelectorAll('button').forEach(function (b) {
+      b.classList.toggle('on', +b.dataset.v <= rating); b.setAttribute('aria-checked', String(+b.dataset.v === rating));
     });
-    // Enlaces aún sin publicar: avisar en vez de ir a «#».
-    document.querySelectorAll('[data-pendiente]').forEach(function (a) {
-      a.addEventListener('click', function (ev) { ev.preventDefault(); alert('Muy pronto: falta poner la ' + a.dataset.pendiente + '.'); });
-    });
-  })();
+  }
+  paintStars();
+
+  var texto = document.getElementById('f-texto'), count = document.getElementById('count');
+  texto.addEventListener('input', function () { count.textContent = texto.value.length; });
+
+  // Bloquea datos de contacto y enlaces
+  var PROHIBIDO = [/[\w.+-]+@[\w-]+\.[\w.]+/, /(\+?\d[\s-]?){7,}/, /(https?:\/\/|www\.)/i];
+  function tieneDatos(s) { return PROHIBIDO.some(function (r) { return r.test(s); }); }
+
+  function leerLocal() { try { return JSON.parse(localStorage.getItem(LOCAL_KEY)) || []; } catch (e) { return []; } }
+  function guardarLocal(arr) { try { localStorage.setItem(LOCAL_KEY, JSON.stringify(arr)); } catch (e) {} }
+
+  var todos = [], filtro = '';
+  function cargar() {
+    if (!API) { document.getElementById('preview-note').hidden = false; todos = leerLocal(); pintar(); return; }
+    fetch(API + '/api/comentarios').then(function (r) { return r.json(); })
+      .then(function (d) { todos = d.comentarios || []; pintar(); })
+      .catch(function () { document.getElementById('list').innerHTML = '<p class="empty">No se pudieron cargar los comentarios.</p>'; });
+  }
+  function esc(s) { var d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+  function pintar() {
+    var lista = todos.filter(function (c) { return !filtro || c.mundo === filtro; });
+    var el = document.getElementById('list');
+    if (!lista.length) { el.innerHTML = '<p class="empty">Todavía no hay comentarios. ¡Sé el primero en opinar!</p>'; return; }
+    el.innerHTML = lista.map(function (c) {
+      var n = Math.max(1, Math.min(5, +c.estrellas || 5));
+      var f = new Date(c.fecha);
+      return '<article class="comment"><header><span class="who">' + esc(c.alias || 'Jugador anónimo') + '</span>' +
+        '<span class="tag">' + esc(c.mundo) + '</span><span class="rate" aria-label="' + n + ' de 5">' +
+        '★'.repeat(n) + '☆'.repeat(5 - n) + '</span>' +
+        '<time datetime="' + esc(c.fecha) + '">' + f.toLocaleDateString('es-EC', { day: 'numeric', month: 'short', year: 'numeric' }) + '</time></header>' +
+        '<p>' + esc(c.texto) + '</p></article>';
+    }).join('');
+  }
+  document.getElementById('filters').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    filtro = b.dataset.f;
+    this.querySelectorAll('button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    pintar();
+  });
+
+  document.getElementById('form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var form = e.target, msg = document.getElementById('msg');
+    var c = {
+      mundo: document.getElementById('f-mundo').value,
+      estrellas: rating,
+      alias: document.getElementById('f-alias').value.trim(),
+      texto: texto.value.trim()
+    };
+    msg.className = 'msg err';
+    if (document.getElementById('f-web').value) return;
+    if (c.texto.length < 5) { msg.textContent = 'Escribe un comentario un poco más largo.'; return; }
+    if (tieneDatos(c.texto) || tieneDatos(c.alias)) { msg.textContent = 'Por tu seguridad, no incluyas correos, teléfonos ni enlaces.'; return; }
+    function listo() {
+      msg.className = 'msg ok';
+      msg.textContent = API ? '¡Gracias! Tu comentario aparecerá cuando sea revisado.' : '¡Gracias! (Vista previa: guardado en este navegador.)';
+      form.reset(); count.textContent = '0'; rating = 5; paintStars();
+    }
+    if (!API) {
+      c.fecha = new Date().toISOString();
+      var arr = leerLocal(); arr.unshift(c); guardarLocal(arr); todos = arr; pintar(); listo(); return;
+    }
+    fetch(API + '/api/comentarios', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(c) })
+      .then(function (r) { if (!r.ok) throw 0; listo(); })
+      .catch(function () { msg.textContent = 'No se pudo enviar. Inténtalo más tarde.'; });
+  });
+
+  cargar();
+})();
 </script>
 </body>
 </html>
