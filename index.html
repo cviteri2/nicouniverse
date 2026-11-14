@@ -216,6 +216,23 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
 footer nav { display: flex; gap: 18px; flex-wrap: wrap; }
 footer a { color: var(--muted); text-decoration: none; }
 footer a:hover { color: var(--cyan); }
+/* Música de fondo */
+.music { position: fixed; right: 16px; bottom: calc(16px + env(safe-area-inset-bottom)); z-index: 40;
+  display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 16px 0 12px;
+  border: 1px solid var(--line-strong); border-radius: 999px; background: rgba(14, 31, 77, .9); backdrop-filter: blur(10px);
+  color: var(--text); font: 600 .9rem var(--body); cursor: pointer; box-shadow: var(--shadow); }
+.music:hover { border-color: var(--cyan); }
+.music:focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; }
+.music svg { width: 20px; height: 20px; color: var(--cyan); flex: none; }
+.music .on-ico { display: none; }
+.music[aria-pressed="true"] .on-ico { display: block; }
+.music[aria-pressed="true"] .off-ico { display: none; }
+.music[aria-pressed="true"] .eq { display: inline-flex; }
+.music .eq { display: none; gap: 2px; align-items: flex-end; height: 14px; }
+.music .eq i { width: 3px; background: var(--cyan); border-radius: 2px; animation: eq 1s ease-in-out infinite alternate; }
+.music .eq i:nth-child(2) { animation-delay: -.4s; } .music .eq i:nth-child(3) { animation-delay: -.7s; }
+@keyframes eq { from { height: 3px; } to { height: 14px; } }
+@media (prefers-reduced-motion: reduce) { .music .eq i { animation: none; height: 10px; } }
 </style>
 </head>
 <body>
@@ -615,6 +632,42 @@ footer a:hover { color: var(--cyan); }
   });
 
   cargar();
+})();
+</script>
+<audio id="bg-music" src="audio/interstellar.mp3" loop preload="none"></audio>
+<button class="music" id="music-btn" type="button" aria-pressed="false" aria-label="Música de fondo">
+  <svg class="off-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z" fill="currentColor"/><path d="M17 9l4 6M21 9l-4 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+  <svg class="on-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z" fill="currentColor"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+  <span class="eq" aria-hidden="true"><i></i><i></i><i></i></span>
+  <span class="label">Música</span>
+</button>
+
+<script>
+(function () {
+  // Música de fondo: los navegadores no dejan que suene sola, así que se activa con el botón.
+  var audio = document.getElementById('bg-music'), btn = document.getElementById('music-btn'), fade;
+  var VOL = 0.35;
+  function set(on) { btn.setAttribute('aria-pressed', String(on)); }
+  function ramp(to, done) {
+    // Límite de pasos: en iPhone/iPad el volumen es de solo lectura y nunca llegaría al objetivo.
+    var from = audio.volume, steps = 12, n = 0;
+    clearInterval(fade);
+    fade = setInterval(function () {
+      n++;
+      try { audio.volume = from + (to - from) * n / steps; } catch (e) {}
+      if (n >= steps) { clearInterval(fade); if (done) done(); }
+    }, 60);
+  }
+  btn.addEventListener('click', function () {
+    if (audio.paused) {
+      audio.volume = 0;
+      var p = audio.play();
+      set(true); ramp(VOL);
+      if (p && p.catch) p.catch(function () { set(false); });
+    } else {
+      set(false); ramp(0, function () { audio.pause(); });
+    }
+  });
 })();
 </script>
 </body>

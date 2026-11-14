@@ -5,6 +5,7 @@ Página de Nico World, vitrina de tres mundos para niñas y niños de 8 a 14 añ
 ```
 index.html     La página (HTML, CSS y JS en un solo archivo, sin dependencias ni CDN)
 fonts/         Baloo 2
+audio/         Música de fondo (se activa con el botón «Música»)
 servidor/      Servidor de comentarios (Flask + SQLite) para PythonAnywhere
 DOMINIO.md     Cómo conectar el dominio de GoDaddy con GitHub Pages
 ```
