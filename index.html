@@ -516,7 +516,8 @@ footer a:hover { color: var(--cyan); }
 
 <script>
 (function () {
-  // Dirección del servidor de comentarios (pendiente). Vacía = modo vista previa en este navegador.
+  // Dirección del servidor de comentarios, sin barra final (ej.: 'https://TU_USUARIO.pythonanywhere.com').
+  // Vacía = modo vista previa: los comentarios se guardan solo en este navegador.
   var API = '';
   var LOCAL_KEY = 'nicoworld-comentarios';
 
@@ -603,8 +604,14 @@ footer a:hover { color: var(--cyan); }
       var arr = leerLocal(); arr.unshift(c); guardarLocal(arr); todos = arr; pintar(); listo(); return;
     }
     fetch(API + '/api/comentarios', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(c) })
-      .then(function (r) { if (!r.ok) throw 0; listo(); })
-      .catch(function () { msg.textContent = 'No se pudo enviar. Inténtalo más tarde.'; });
+      .then(function (r) {
+        if (r.ok) return listo();
+        return r.json().then(function (d) { throw d.error; }, function () { throw 0; });
+      })
+      .catch(function (err) {
+        msg.className = 'msg err';
+        msg.textContent = typeof err === 'string' ? 'No se pudo enviar: ' + err + '.' : 'No se pudo enviar. Inténtalo más tarde.';
+      });
   });
 
   cargar();
