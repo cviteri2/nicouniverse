@@ -13,5 +13,5 @@ Sin cuentas, sin analítica, sin cookies, sin datos personales.
 
 ## Pendiente
 
-- Enlaces con `data-pendiente` (direcciones de AstroWorld y Humanity World): poner la URL real en `href` y borrar el atributo.
+- Enlaces a los mundos: AstroWorld → https://astroworld.pythonanywhere.com, FlagWorld → https://flagworld.pythonanywhere.com, Humanity World → https://humanityworld.pythonanywhere.com
 - Comentarios: mientras la variable `API` del script esté vacía, funcionan en modo vista previa (solo en el navegador). El servidor que los guarda y el panel para aprobarlos están en `servidor/` (ver `servidor/README.md`).
