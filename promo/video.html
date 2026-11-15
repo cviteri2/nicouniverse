@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Nico Universe · video promocional</title>
+<!--
+  Compositor de los videos promocionales. Todo el contenido visual de la página
+  sale de la captura real de index.html (build/pagina.png); los textos sobreimpresos
+  citan textos que ya están en la página. Nada de las apps se recrea aquí.
+  Uso: video.html?v=1|2|3  ·  window.seek(segundos) dibuja un cuadro exacto.
+-->
+<style>
+@font-face { font-family: 'Baloo 2'; font-weight: 600; src: url(../fonts/baloo-2-latin-600-normal.woff2) format('woff2'); }
+@font-face { font-family: 'Baloo 2'; font-weight: 800; src: url(../fonts/baloo-2-latin-800-normal.woff2) format('woff2'); }
+:root {
+  --bg: #07112b; --text: #eef5ff; --muted: #a6badb; --cyan: #5fd3ff; --blue: #3d7bff;
+  --yellow: #ffd23f; --pink: #ff6fb5; --violet: #9d7bff; --green: #7ddf6c;
+  --head: 'Baloo 2', system-ui, sans-serif;
+  --body: system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+}
+html, body { margin: 0; background: #000; }
+#stage {
+  position: relative; width: 432px; height: 768px; overflow: hidden;
+  background: radial-gradient(120% 70% at 50% 0%, #11265e 0%, #07112b 60%, #050c20 100%);
+  color: var(--text); font-family: var(--body);
+}
+#stars { position: absolute; inset: 0; }
+.abs { position: absolute; }
+.cap { left: 24px; right: 24px; text-align: center; font-family: var(--head); font-weight: 800; line-height: 1.05; }
+.cap small { display: block; font-family: var(--body); font-weight: 600; font-size: 15px; color: var(--muted); margin-top: 8px; line-height: 1.35; }
+.kicker { font-family: var(--body); font-weight: 700; font-size: 12px; letter-spacing: .14em; color: var(--cyan); text-transform: uppercase; display: block; margin-bottom: 6px; }
+
+/* Barra de búsqueda */
+.bar {
+  left: 30px; width: 372px; height: 58px; border-radius: 29px;
+  background: #f4f8ff; color: #0b1a42; display: flex; align-items: center; gap: 12px; padding: 0 20px; box-sizing: border-box;
+  box-shadow: 0 14px 40px rgba(0,0,0,.45), 0 0 0 4px rgba(95,211,255,.18);
+  font-size: 22px; font-weight: 600;
+}
+.bar svg { flex: none; }
+.bar .txt { white-space: nowrap; }
+.bar .caret { display: inline-block; width: 2px; height: 26px; background: #3d7bff; margin-left: 2px; vertical-align: -5px; }
+.bar .go { margin-left: auto; width: 34px; height: 34px; border-radius: 50%; background: var(--cyan); display: grid; place-items: center; }
+
+/* Lista de opciones de la página */
+.list {
+  left: 30px; width: 372px; border-radius: 22px; background: rgba(11, 26, 66, .92);
+  border: 1px solid rgba(140,190,255,.22); box-shadow: 0 20px 50px rgba(2,8,30,.6); overflow: hidden; padding: 6px 0;
+}
+.row { position: relative; display: flex; align-items: center; gap: 12px; height: 50px; padding: 0 18px; }
+.row + .row { border-top: 1px solid rgba(140,190,255,.10); }
+.row .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--muted); flex: none; }
+.row b { font-family: var(--head); font-weight: 800; font-size: 19px; line-height: 1; display: block; }
+.row span { font-size: 12.5px; color: var(--muted); display: block; margin-top: 2px; }
+.row .tag { margin-left: auto; font-size: 11px; font-weight: 700; letter-spacing: .08em; color: #07112b; background: var(--cyan); border-radius: 999px; padding: 4px 9px; }
+.row .glow { position: absolute; inset: 3px 8px; border-radius: 14px; background: rgba(95,211,255,.16); box-shadow: inset 0 0 0 1.5px rgba(95,211,255,.6); }
+
+/* Ventana con la página real */
+.win { overflow: hidden; border-radius: 26px; background: #07112b; border: 1.5px solid rgba(140,190,255,.32); box-shadow: 0 24px 60px rgba(0,0,0,.55); }
+.win img { position: absolute; left: 0; top: 0; transform-origin: 0 0; }
+.win .url { position: absolute; left: 0; right: 0; top: 0; height: 34px; background: #0e1f4d; display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 13px; font-weight: 600; color: var(--text); z-index: 2; border-bottom: 1px solid rgba(140,190,255,.2); }
+.ripple { border-radius: 50%; border: 3px solid #fff; pointer-events: none; z-index: 5; }
+.hl { border-radius: 14px; box-shadow: 0 0 0 3px var(--yellow), 0 0 30px rgba(255,210,63,.6); z-index: 4; }
+
+/* Cierre */
+.pills { left: 0; right: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; padding: 0 24px; }
+.pill { font-family: var(--head); font-weight: 800; font-size: 19px; padding: 8px 18px; border-radius: 999px; background: var(--cyan); color: #07112b; }
+.fadeblack { inset: 0; background: #000; pointer-events: none; z-index: 50; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <canvas id="stars" width="1080" height="1920"></canvas>
+</div>
+<script>
+'use strict';
+const V = +(new URLSearchParams(location.search).get('v') || 1);
+const stage = document.getElementById('stage');
+
+/* ---------- utilidades de tiempo ---------- */
+const clamp = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x));
+const ease = x => x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+const easeOut = x => 1 - Math.pow(1 - x, 3);
+const back = x => { const c = 1.6; return 1 + (c + 1) * Math.pow(x - 1, 3) + c * Math.pow(x - 1, 2); };
+// Interpola una lista de claves [[t, valor], ...] con suavizado.
+function K(t, keys, fn = ease) {
+  if (t <= keys[0][0]) return keys[0][1];
+  for (let i = 1; i < keys.length; i++) {
+    if (t <= keys[i][0]) {
+      const [t0, a] = keys[i - 1], [t1, b] = keys[i];
+      return a + (b - a) * fn((t - t0) / (t1 - t0));
+    }
+  }
+  return keys[keys.length - 1][1];
+}
+// Opacidad de un elemento visible entre a y b (con entrada y salida de d segundos).
+const vis = (t, a, b, d = .4) => clamp((t - a) / d) * clamp((b - t) / d);
+
+const updaters = [];
+function el(html, update) {
+  const w = document.createElement('div');
+  w.innerHTML = html.trim();
+  const e = w.firstElementChild;
+  stage.appendChild(e);
+  if (update) updaters.push(t => update(t, e));
+  return e;
+}
+function setOp(e, o) { e.style.opacity = o; e.style.visibility = o <= 0.001 ? 'hidden' : 'visible'; }
+
+/* ---------- estrellas de fondo ---------- */
+const cv = document.getElementById('stars'); cv.style.width = '432px'; cv.style.height = '768px';
+const cx = cv.getContext('2d');
+let seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+const stars = Array.from({ length: 140 }, () => ({ x: rnd() * 1080, y: rnd() * 1920, r: .6 + rnd() * 2.2, p: rnd() * 6.28, s: .5 + rnd() * 1.5, v: 4 + rnd() * 14 }));
+function drawStars(t) {
+  cx.clearRect(0, 0, 1080, 1920);
+  for (const s of stars) {
+    const y = (s.y - t * s.v + 1920) % 1920;
+    cx.globalAlpha = .25 + .55 * (.5 + .5 * Math.sin(t * s.s + s.p));
+    cx.fillStyle = '#cfe6ff'; cx.beginPath(); cx.arc(s.x, y, s.r, 0, 6.29); cx.fill();
+  }
+  cx.globalAlpha = 1;
+}
+updaters.push(drawStars);
+
+/* ---------- página real ---------- */
+// Coordenadas en píxeles CSS de la página a 432 px de ancho (salen de build/pagina.json).
+const PAGE_W = 432;
+const P = {
+  astroCard: { x: 16, y: 2823, w: 400, h: 954 }, astroBtn: { x: 37, y: 3708, w: 191, h: 42 },
+  flagCard: { x: 16, y: 3805, w: 400, h: 993 }, flagBtn: { x: 37, y: 4729, w: 183, h: 42 },
+  humCard: { x: 16, y: 4826, w: 400, h: 962 }, humBtn: { x: 37, y: 5688, w: 227, h: 42 },
+  jugar: { x: 16, y: 5848, w: 400, h: 383 },
+  jA: { x: 70, y: 6101, w: 145, h: 42 }, jF: { x: 225, y: 6101, w: 137, h: 42 }, jH: { x: 126, y: 6153, w: 180, h: 42 },
+  compromisos: { y: 7557 }, mundos: { y: 2498 },
+};
+
+// Ventana que muestra la página. cam(t) -> {x, y, s}: esquina superior izquierda en coordenadas de página y escala.
+function pageWindow(box, cam, op, withUrl = true) {
+  const top = withUrl ? 34 : 0;
+  const e = el(`<div class="abs win" style="left:${box.x}px;top:${box.y}px;width:${box.w}px;height:${box.h}px">
+      ${withUrl ? '<div class="url"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#7ddf6c" stroke-width="3"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>nicouniverse.com</div>' : ''}
+      <img src="build/pagina.png" alt="">
+    </div>`, (t, e) => {
+    const o = op(t); setOp(e, o);
+    e.style.transform = `translateY(${(1 - Math.min(1, o * 1.2)) * 30}px) scale(${.96 + .04 * Math.min(1, o)})`;
+    const c = cam(t), img = e.querySelector('img');
+    img.style.width = (PAGE_W * c.s) + 'px';
+    img.style.transform = `translate(${-c.x * c.s}px, ${top - c.y * c.s}px)`;
+  });
+  // Convierte un rectángulo de la página a coordenadas del escenario en el instante t.
+  e.toStage = (t, r) => { const c = cam(t); return { x: box.x + (r.x - c.x) * c.s, y: box.y + top + (r.y - c.y) * c.s, w: r.w * c.s, h: r.h * c.s }; };
+  return e;
+}
+// Toque: aro que se expande sobre un botón de la página.
+function tap(win, rect, at) {
+  el(`<div class="abs ripple"></div>`, (t, e) => {
+    const k = (t - at) / .7; setOp(e, k < 0 || k > 1 ? 0 : 1 - k);
+    const r = win.toStage(t, rect), d = 20 + 70 * easeOut(clamp(k));
+    Object.assign(e.style, { left: r.x + r.w / 2 - d / 2 + 'px', top: r.y + r.h / 2 - d / 2 + 'px', width: d + 'px', height: d + 'px' });
+  });
+}
+// Resalta un botón de la página entre a y b.
+function highlight(win, rect, a, b) {
+  el(`<div class="abs hl"></div>`, (t, e) => {
+    setOp(e, vis(t, a, b, .25) * (.75 + .25 * Math.sin(t * 7)));
+    const r = win.toStage(t, rect), p = 4;
+    Object.assign(e.style, { left: r.x - p + 'px', top: r.y - p + 'px', width: r.w + 2 * p + 'px', height: r.h + 2 * p + 'px', borderRadius: r.h / 2 + p + 'px' });
+  });
+}
+// Texto sobreimpreso.
+function caption(html, y, a, b, size = 34) {
+  return el(`<div class="abs cap" style="top:${y}px;font-size:${size}px">${html}</div>`, (t, e) => {
+    const o = vis(t, a, b, .45); setOp(e, o);
+    e.style.transform = `translateY(${(1 - easeOut(clamp((t - a) / .5))) * 18}px)`;
+  });
+}
+
+/* ---------- 1. Inicio común: barra de búsqueda + opciones de la página ---------- */
+const INTRO_END = 6.0;
+const OPTIONS = [
+  ['Para quién', 'Pensado para niños curiosos', '#5fd3ff'],
+  ['Los mundos', 'Tres mundos, una misma curiosidad', '#9d7bff'],
+  ['AstroWorld', 'El cielo, de cerca', '#ffd23f', 'APP'],
+  ['FlagWorld', 'Todas las banderas del mundo', '#7ddf6c', 'APP'],
+  ['Humanity World', 'Combates amistosos', '#ff6fb5', 'APP'],
+  ['Jugar ahora', 'Elige tu mundo y empieza a jugar', '#5fd3ff'],
+  ['Opiniones', '¿Qué te pareció?', '#5fd3ff'],
+  ['Compromisos', 'Un lugar seguro para jugar', '#5fd3ff'],
+];
+const SEARCH_ICON = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3d7bff" stroke-width="2.6" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m20 20-4.6-4.6"/></svg>';
+const ARROW = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#07112b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+
+function searchBar(y, from, to, typeA, typeB, outAt, text = 'nicouniverse.com') {
+  return el(`<div class="abs bar" style="top:${y}px">${SEARCH_ICON}<div class="txt"><span class="t"></span><i class="caret"></i></div><div class="go">${ARROW}</div></div>`, (t, e) => {
+    const o = vis(t, from, to, .4); setOp(e, o);
+    const n = Math.round(text.length * clamp((t - typeA) / (typeB - typeA)));
+    e.querySelector('.t').textContent = text.slice(0, n);
+    e.querySelector('.caret').style.opacity = (t < typeB + .3 || Math.floor(t * 2.5) % 2) ? 1 : 0;
+    const press = t > outAt && t < outAt + .25 ? .96 : 1;
+    e.style.transform = `translateY(${(1 - easeOut(clamp((t - from) / .5))) * 20}px) scale(${press})`;
+  });
+}
+
+function intro() {
+  caption('Todo empieza aquí', 92, .2, 2.5, 30);
+  caption('<span class="kicker">Lo que hay en la página</span>', 92, 2.6, 4.3, 30);
+  caption('Y desde aquí entras<br>a <span style="color:var(--yellow)">tres apps</span>', 70, 4.3, INTRO_END - .05, 32);
+  searchBar(160, .1, INTRO_END, .6, 2.1, 2.35);
+  const rows = OPTIONS.map(([n, d, c, tag], i) =>
+    `<div class="row" data-i="${i}"><div class="glow"></div><i class="dot" style="background:${c}"></i><div><b>${n}</b><span>${d}</span></div>${tag ? `<em class="tag" style="font-style:normal">${tag}</em>` : ''}</div>`).join('');
+  el(`<div class="abs list" style="top:232px">${rows}</div>`, (t, e) => {
+    const o = vis(t, 2.4, INTRO_END, .35); setOp(e, o);
+    e.style.transform = `translateY(${(1 - easeOut(clamp((t - 2.4) / .4))) * -14}px)`;
+    e.style.clipPath = `inset(0 0 ${100 - 100 * easeOut(clamp((t - 2.4) / .5))}% 0 round 22px)`;
+    e.querySelectorAll('.row').forEach((r, i) => {
+      const a = 2.55 + i * .17, k = easeOut(clamp((t - a) / .35));
+      r.style.opacity = k; r.style.transform = `translateX(${(1 - k) * 24}px)`;
+      const isApp = i >= 2 && i <= 4;
+      r.querySelector('.glow').style.opacity = isApp ? clamp((t - (4.4 + (i - 2) * .22)) / .3) : 0;
+      const tg = r.querySelector('.tag');
+      if (tg) { const kk = back(clamp((t - (4.4 + (i - 2) * .22)) / .35)); tg.style.transform = `scale(${kk})`; tg.style.opacity = clamp(kk); }
+    });
+  });
+}
+
+/* ---------- Cierre común ---------- */
+function outro(a, end) {
+  caption('<span class="kicker">Hecho en Ecuador · 8 a 14 años</span>Nico <span style="color:var(--cyan)">Universe</span>', 150, a, end + 1, 54);
+  caption('<small style="font-size:17px">Tres mundos para aprender jugando</small>', 262, a + .3, end + 1);
+  searchBar(330, a + .5, end + 1, a + .8, a + 1.9, 999);
+  el(`<div class="abs pills" style="top:428px"><span class="pill">AstroWorld</span><span class="pill">FlagWorld</span><span class="pill">Humanity World</span></div>`, (t, e) => {
+    setOp(e, vis(t, a + 1.9, end + 1, .3));
+    e.querySelectorAll('.pill').forEach((p, i) => { const k = back(clamp((t - a - 1.9 - i * .15) / .4)); p.style.transform = `scale(${k})`; p.style.opacity = clamp(k); });
+  });
+  caption('<small style="font-size:18px;color:var(--text)">Gratis · sin registro</small>', 540, a + 2.6, end + 1);
+  el(`<div class="abs fadeblack"></div>`, (t, e) => setOp(e, clamp((t - (end - .6)) / .6)));
+}
+
+/* ---------- Videos ---------- */
+const VIDEOS = {
+  // 1 · Recorrido por la página real hasta los tres mundos.
+  1: { dur: 25, build() {
+    intro();
+    const A = INTRO_END;
+    caption('Bienvenidos a<br><span style="color:var(--cyan)">nicouniverse.com</span>', 46, A + .1, A + 4.4, 34);
+    caption('Desde aquí entras<br>a tres mundos', 46, A + 4.6, A + 12.6, 34);
+    caption('Un toque<br>y empiezas a jugar', 46, A + 12.8, A + 15.9, 34);
+    const box = { x: 66, y: 160, w: 300, h: 560 }, s = (box.w) / PAGE_W;
+    const cam = t => ({ x: 0, s, y: K(t, [[A + 2.4, 0], [A + 4.4, 935], [A + 5.6, P.mundos.y + 20], [A + 7.0, P.astroCard.y - 10], [A + 8.6, P.astroCard.y - 10], [A + 9.4, P.flagCard.y - 10], [A + 11.0, P.flagCard.y - 10], [A + 11.8, P.humCard.y - 10], [A + 12.6, P.humCard.y - 10], [A + 13.4, P.jugar.y - 140]]) });
+    const win = pageWindow(box, cam, t => vis(t, A, A + 16, .5));
+    const tags = [['AstroWorld', '#ffd23f', A + 7.0, A + 8.7], ['FlagWorld', '#7ddf6c', A + 9.4, A + 11.1], ['Humanity World', '#ff6fb5', A + 11.8, A + 12.7]];
+    tags.forEach(([n, c, a, b]) => el(`<div class="abs cap" style="top:724px;font-size:28px;color:${c}">${n}</div>`, (t, e) => setOp(e, vis(t, a, b, .3))));
+    highlight(win, P.jA, A + 13.6, A + 14.3); tap(win, P.jA, A + 13.9);
+    highlight(win, P.jF, A + 14.3, A + 15.0); tap(win, P.jF, A + 14.6);
+    highlight(win, P.jH, A + 15.0, A + 15.8); tap(win, P.jH, A + 15.3);
+    outro(A + 16.2, 25);
+  } },
+
+  // 2 · Las tres tarjetas de los mundos, cada una con su botón para entrar.
+  2: { dur: 26, build() {
+    intro();
+    const A = INTRO_END;
+    const worlds = [
+      ['AstroWorld', 'var(--yellow)', P.astroCard, P.astroBtn],
+      ['FlagWorld', 'var(--green)', P.flagCard, P.flagBtn],
+      ['Humanity World', 'var(--pink)', P.humCard, P.humBtn],
+    ];
+    const box = { x: 26, y: 168, w: 380, h: 540 }, s = box.w / 400;
+    worlds.forEach(([n, c, card, btn], i) => {
+      const a = A + i * 4.2, b = a + 4.2;
+      caption(`<span class="kicker">En nicouniverse.com</span><span style="color:${c}">${n}</span>`, 48, a + .1, b - .1, 40);
+      const cam = t => ({ x: card.x, s, y: K(t, [[a + .9, card.y], [a + 2.6, btn.y + btn.h + 26 - (box.h) / s]]) });
+      const win = pageWindow(box, cam, t => vis(t, a, b, .4), false);
+      highlight(win, btn, a + 2.7, b - .2); tap(win, btn, a + 3.2);
+      caption(`<small style="font-size:17px;color:var(--text)">Entra con un toque · gratis · sin registro</small>`, 722, a + 2.7, b - .1);
+    });
+    const B = A + 12.6;
+    caption('Elige tu mundo<br>y empieza a jugar', 52, B + .1, B + 4.4, 36);
+    const box2 = { x: 26, y: 200, w: 380, h: 400 }, s2 = box2.w / 400;
+    const win2 = pageWindow(box2, () => ({ x: P.jugar.x, y: P.jugar.y - 10, s: s2 }), t => vis(t, B, B + 4.6, .4), false);
+    highlight(win2, P.jA, B + 1.0, B + 4.4); highlight(win2, P.jF, B + 1.3, B + 4.4); highlight(win2, P.jH, B + 1.6, B + 4.4);
+    caption('<small style="font-size:17px;color:var(--text)">No hace falta crear una cuenta<br>ni descargar nada de una tienda</small>', 630, B + 1.8, B + 4.4);
+    outro(B + 4.8, 26);
+  } },
+
+  // 3 · Lo que promete la página: seguro, sin cuentas, en cualquier pantalla.
+  3: { dur: 25, build() {
+    intro();
+    const A = INTRO_END;
+    const box = { x: 26, y: 190, w: 380, h: 500 }, s = box.w / PAGE_W;
+    caption('Tres mundos<br>para aprender jugando', 52, A + .1, A + 4.3, 36);
+    pageWindow(box, t => ({ x: 0, s, y: K(t, [[A + .6, 0], [A + 2.2, 900]]) }), t => vis(t, A, A + 4.4, .4));
+    const C = A + 4.6;
+    caption('Un lugar seguro<br>para jugar', 52, C + .1, C + 6.2, 38);
+    pageWindow({ x: 26, y: 205, w: 380, h: 370 }, t => ({ x: 0, s, y: K(t, [[C + .8, P.compromisos.y + 160], [C + 3.2, P.compromisos.y + 180]]) }), t => vis(t, C, C + 6.4, .4), false);
+    const D = C + 6.6;
+    caption('Entra, juega<br>y, si te gusta, instálalo', 52, D + .1, D + 4.3, 34);
+    const box3 = { x: 26, y: 200, w: 380, h: 400 }, s3 = box3.w / 400;
+    const w3 = pageWindow(box3, () => ({ x: P.jugar.x, y: P.jugar.y - 10, s: s3 }), t => vis(t, D, D + 4.4, .4), false);
+    highlight(w3, P.jA, D + 1.2, D + 4.2); highlight(w3, P.jF, D + 1.5, D + 4.2); highlight(w3, P.jH, D + 1.8, D + 4.2);
+    caption('<small style="font-size:17px;color:var(--text)">Celular, tablet o computadora</small>', 630, D + 1.8, D + 4.3);
+    outro(D + 4.6, 25);
+  } },
+};
+
+const VID = VIDEOS[V];
+VID.build();
+window.DURATION = VID.dur;
+window.seek = t => { for (const u of updaters) u(t); };
+window.ready = Promise.all([document.fonts.ready, ...[...document.images].map(i => i.decode())]);
+window.seek(new URLSearchParams(location.search).has('t') ? +new URLSearchParams(location.search).get('t') : 0);
+</script>
+</body>
+</html>
